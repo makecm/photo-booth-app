@@ -70,7 +70,7 @@ function App() {
     };
 
     imageUrl && imagePosition(previewSize, imageUrl)
-  }, [imageUrl, previewSize])
+  }, [imageUrl, previewSize, setTransformedImage])
 
   const startAgain = () => {
     setImageUrl(null);
