@@ -1,38 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&family=Poppins:wght@700&display=swap');
+
+:root {
+  --indigo: #667EEA;
+  --dark-indigo: #5A67D8;
+  --darker-indigo: #4C51BF;
+  --gray: #C3C5C7;
+  --orange: #FF9E90;
+  --black: #101820;
+  --blackAlpha: #10182020;
+  --white: #FFFFFF;
+  --red: #EF6690;
+}
+
+html {
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  padding: 3rem;
   display: flex;
   flex-direction: column;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin-bottom: 2rem;
+}
+
+header div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  margin-left: 1rem;
+  margin-top: 0.3rem;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.inner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.controlPanel {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-top: -1rem;
+}
+
+a.download {
+  display: block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.3em;
+  background-color: var(--indigo);
+  border: none;
   color: white;
+  box-shadow: none;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 1rem;
+  box-shadow: 5px 5px 0 var(--blackAlpha);
+  transition: all 0.25s ease;
+  z-index: 100;
 }
 
-.App-link {
-  color: #61dafb;
+a.download:hover {
+  background-color: var(--orange);
+  color: var(--black);
+  transform: translate(-5px, -5px);
+  box-shadow: 10px 10px 0 var(--blackAlpha);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+a.download:focus, a.download:active  {
+  background-color: var(--orange);
+  color: var(--black);
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0 var(--blackAlpha);
+}
+
+a.download.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button.reset {
+  font-size: 1rem;
+  margin: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.3em;
+  background-color: var(--blackAlpha);
+  border: none;
+  color: var(--black);
+  font-weight: 700;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+button.reset:focus {
+  outline: none;
+  box-shadow: none;
 }

@@ -1,0 +1,75 @@
+.Preview {
+  border: 5px solid var(--black);
+  border-radius: 1rem;
+  background-color: var(--indigo);
+  box-shadow: 10px 10px 0 var(--blackAlpha);
+  position: absolute;
+  overflow: hidden;
+  top: 50%;
+  left: 50%;
+  transition: all ease 0.3s;
+}
+
+.Preview .icon path {
+  fill: var(--white);
+}
+
+.Preview  .icon {
+  margin: 2rem;
+  width: 3rem;
+  height: 3rem;
+}
+
+img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  object-fit: cover;
+  object-position: center;
+  filter: grayscale(1) brightness(0.8);
+  mix-blend-mode: screen;
+  width: 100%;
+  height: 100% !important;
+}
+
+.shape-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.svg-shapes {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  width: 100%;
+  height: 100% !important;
+}
+
+.svg-shapes circle {
+  fill: transparent;
+  stroke: url(#bggrad);
+  stroke-linecap: round;
+  animation: bgmove 200s linear infinite;
+  mix-blend-mode: screen;
+  opacity: 0.8;
+}
+
+@keyframes bgmove {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
