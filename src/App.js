@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import axios from "axios";
 import { isMobile } from "react-device-detect";
+
 import './App.css';
 import { useAppState } from "./providers/appState";
 
 import { ReactComponent as Icon } from './assets/icon.svg'
-
 import Uploader from './components/Uploader';
 import Preview from './components/Preview';
 import Switcher from './components/Switcher';
@@ -32,21 +32,30 @@ function App() {
   const [size, setSize] = useState(null);
   const previewRef = useRef(null)
 
-  useEffect(() => {
-    const pixelH = previewSize.height,
-      pixelW = previewSize.width,
-      containerH = previewRef.current.clientHeight,
-      containerW = previewRef.current.clientWidth,
-      heightRatio = containerH / pixelH,
-      widthRatio = containerW / pixelW,
-      fitZoom = Math.min(heightRatio, widthRatio)
 
-    setSize({
-      pixelW: pixelW,
-      pixelH: pixelH,
-      fitZoom: fitZoom,
-    })
-  }, [previewRef, previewSize, imageUrl])
+  useEffect(() => {
+    function fitPreview() {
+      const pixelH = previewSize.height,
+            pixelW = previewSize.width,
+            containerH = previewRef.current.clientHeight,
+            containerW = previewRef.current.clientWidth,
+            heightRatio = containerH / pixelH,
+            widthRatio = containerW / pixelW,
+            fitZoom = Math.min(heightRatio, widthRatio)
+
+      setSize({
+        pixelW: pixelW,
+        pixelH: pixelH,
+        fitZoom: fitZoom,
+      })
+    } fitPreview()
+
+    window.onresize = resize;
+
+    function resize() {
+      fitPreview()
+    }
+  }, [previewSize])
 
   useEffect(() => {
     const imagePosition = (size, url) => {
@@ -141,9 +150,9 @@ function App() {
         </button>
       )}
       </header>
-      <div className="container" ref={previewRef}>
+      <div className="container">
         <Uploader label="Upload your photo" />
-        <div className="inner">
+        <div className={`inner ${imageUrl ? 'uploaded' : 'blank'}`} ref={previewRef}>
           <Preview
             style={{
               width: size && size.pixelW + 'px',
