@@ -12,7 +12,9 @@ const Preview = ({ style }) => {
   return (
     <div className="Preview" style={style}>
       <Icon />
-      {transformedImage && <img alt="avatar" src={transformedImage} />}
+      <div className="preview-container">
+        {transformedImage && <img alt="avatar" src={transformedImage} />}
+      </div>
       <Shapes />
     </div>
   )
