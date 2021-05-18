@@ -1,9 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
-import axios from "axios";
+import { useEffect } from 'react';
 import { isMobile } from "react-device-detect";
 
 import './App.css';
 import { useAppState } from "./providers/appState";
+
+import make from "./make/client"
 
 import { ReactComponent as Icon } from './assets/icon.svg'
 import Uploader from './components/Uploader';
@@ -14,55 +15,25 @@ import Spinner from './components/Uploader/spinner'
 function App() {
   const {
     imageUrl,
+    setImageUrl,
     setPreviewSize,
     previewSize,
     setTransformedImage,
     transformedImage,
-    setImageUrl,
     setProgress,
     isGenerating,
     setIsGenerating,
     generatedAvatar,
     setGeneratedAvatars,
-    makeAPIKey,
-    makeTemplateURL,
     sizes,
   } = useAppState();
-
-  const [size, setSize] = useState(null);
-  const previewRef = useRef(null)
-
-
-  useEffect(() => {
-    function fitPreview() {
-      const pixelH = previewSize.height,
-            pixelW = previewSize.width,
-            containerH = previewRef.current.clientHeight,
-            containerW = previewRef.current.clientWidth,
-            heightRatio = containerH / pixelH,
-            widthRatio = containerW / pixelW,
-            fitZoom = Math.min(heightRatio, widthRatio)
-
-      setSize({
-        pixelW: pixelW,
-        pixelH: pixelH,
-        fitZoom: fitZoom,
-      })
-    } fitPreview()
-
-    window.onresize = resize;
-
-    function resize() {
-      fitPreview()
-    }
-  }, [previewSize])
 
   useEffect(() => {
     const imagePosition = (size, url) => {
       const arr = new URL(url).href.split("/");
       let transformation = '';
 
-      switch(size.key) {
+      switch (size.key) {
         case 0:
           transformation = 'w_1080,h_1080,c_thumb,g_face/w_1000'
           break;
@@ -94,13 +65,6 @@ function App() {
       const generateAvatar = () => {
         setIsGenerating(true);
 
-        const url = `${makeTemplateURL}`;
-
-        const headers = {
-          'Content-Type': 'application/json',
-          'X-MAKE-API-KEY': `${makeAPIKey}`
-        }
-
         const data = {
           customSize: {
             width: previewSize.width,
@@ -115,9 +79,7 @@ function App() {
           }
         };
 
-        axios.post(url, data, {
-          headers: headers
-        })
+        make(data)
           .then((response) => {
             console.log(response)
             const generatedAvatars = response.data.resultUrl;
@@ -131,7 +93,7 @@ function App() {
       };
       generateAvatar();
     }
-  }, [imageUrl, transformedImage, makeAPIKey, makeTemplateURL, setGeneratedAvatars, setIsGenerating, previewSize]);
+  }, [transformedImage, setGeneratedAvatars, setIsGenerating, previewSize]);
 
   return (
     <div className="App">
@@ -141,32 +103,19 @@ function App() {
           <h1>React Photo Booth</h1>
         </div>
         {imageUrl && (
-        <button
-          className="reset"
-          onClick={function () {
-            startAgain();
-          }}>
-          Try Again
-        </button>
-      )}
+          <button
+            className="reset"
+            onClick={function () {
+              startAgain();
+            }}>
+            Try Again
+          </button>
+        )}
       </header>
       <div className="container">
         <Uploader label="Upload your photo" />
-        <div className={`inner ${imageUrl ? 'uploaded' : 'blank'}`} ref={previewRef}>
-          <Preview
-            style={{
-              width: size && size.pixelW + 'px',
-              height: size && size.pixelH + 'px',
-              transform: size && `scale(${size.fitZoom}) translate(-50%, -50%)`,
-              transformOrigin: '0 0',
-              top: '50%',
-              left: '50%',
-              filter: imageUrl ? 'blur(0)' : 'blur(30px)',
-              transition: 'all ease 0.3s',
-            }}
-          />
-        </div>
-        {imageUrl && (
+        <Preview />
+        {transformedImage && (
           <div className="controlPanel">
             <Switcher />
             <a
