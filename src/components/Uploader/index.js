@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import axios from "axios";
 import './styles.css';
 import { useAppState } from "../../providers/appState";
@@ -7,14 +7,11 @@ import Spinner from './spinner'
 
 const Uploader = ({ label }) => {
   const {
-    imageUrl,
     setImageUrl,
     isUploading,
     setIsUploading,
     progressIncrement,
     setProgress,
-    cloudinaryUploadPreset,
-    cloudinaryCloudName,
   } = useAppState();
 
   const getBase64Image = (file, callback) => {
@@ -75,8 +72,8 @@ const Uploader = ({ label }) => {
     setIsUploading(true);
 
     for (const file of event.target.files) {
-      const uploadPreset = cloudinaryUploadPreset;
-      const cloudName = cloudinaryCloudName;
+      const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
+      const cloudName = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
       const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
 
       getBase64Image(file, (base64Value) => {
@@ -97,8 +94,9 @@ const Uploader = ({ label }) => {
         axios
           .post(url, data, config)
           .then((response) => {
+
             setIsUploading(false);
-            setImageUrl(response.data.url);
+            setImageUrl(imagePosition(response.data.url));
           })
 
           .catch((error) => {
@@ -109,47 +107,56 @@ const Uploader = ({ label }) => {
     }
   };
 
+  const imagePosition = (url) => {
+    const arr = new URL(url).href.split("/");
+    const transformation = 'w_1080,h_1080,c_thumb,g_face/w_1000';
+    console.log('hey')
+
+    arr.splice(6, 0, transformation)
+    const joinedArr = arr.join('/')
+
+    return joinedArr
+  };
+
   return (
-    <Fragment>
-      {!imageUrl && (
-        <div className="Uploader" disabled={isUploading}>
-          <input
-            type="file"
-            id="fileupload"
-            accept="image/*"
-            onChange={onInputChange}
-            title="Upload your Photo"
-            disabled={isUploading}
-          />
-          <label
-            htmlFor="fileupload"
+    <>
+      <div className="Uploader" disabled={isUploading}>
+        <input
+          type="file"
+          id="fileupload"
+          accept="image/*"
+          onChange={onInputChange}
+          title="Upload your Photo"
+          disabled={isUploading}
+        />
+        <label
+          htmlFor="fileupload"
+          style={{
+            background: `linear-gradient(90deg, #4C51BF ${progressIncrement}%, #667EEA ${progressIncrement}%)`
+          }}
+        >
+          <span
+            className="upload"
             style={{
-              background: `linear-gradient(90deg, #4C51BF ${progressIncrement}%, #667EEA ${progressIncrement}%)`
+              transform: isUploading && 'translateY(300%)'
             }}
           >
-            <span
-              className="upload"
-              style={{
-                transform: isUploading && 'translateY(300%)'
-              }}
-            >
-              {label}
-            </span>
-            <span
-              className="uploading"
-              style={{
-                top: isUploading ? '0' : '-180%'
-              }}
-            >
-              Uploading
+            {label}
+          </span>
+          <span
+            className="uploading"
+            style={{
+              top: isUploading ? '0' : '-180%'
+            }}
+          >
+            Uploading
               <Spinner styles={{
-                marginLeft: '1rem'
-              }} />
-            </span>
-          </label>
-        </div>
-      )}
-    </Fragment>
+              marginLeft: '1rem'
+            }} />
+          </span>
+        </label>
+      </div>
+    </>
   );
 }
 

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+
 import { useAppState } from '../../providers/appState'
 
-export default function usePreviewSize(previewRef) {
+export function usePreviewSize(previewRef) {
   const [calcSize, setCalcSize] = useState(null)
 
   const {
@@ -11,12 +12,12 @@ export default function usePreviewSize(previewRef) {
   useEffect(() => {
     function fitPreview() {
       const pixelH = previewSize.height,
-            pixelW = previewSize.width,
-            containerH = previewRef.current.clientHeight,
-            containerW = previewRef.current.clientWidth,
-            heightRatio = containerH / pixelH,
-            widthRatio = containerW / pixelW,
-            fitZoom = Math.min(heightRatio, widthRatio)
+        pixelW = previewSize.width,
+        containerH = previewRef.current.clientHeight,
+        containerW = previewRef.current.clientWidth,
+        heightRatio = containerH / pixelH,
+        widthRatio = containerW / pixelW,
+        fitZoom = Math.min(heightRatio, widthRatio)
 
       setCalcSize({
         pixelW: pixelW,
@@ -30,7 +31,7 @@ export default function usePreviewSize(previewRef) {
     function resize() {
       fitPreview()
     }
-  }, [previewSize])
+  }, [previewSize, previewRef])
 
   return calcSize
 }
