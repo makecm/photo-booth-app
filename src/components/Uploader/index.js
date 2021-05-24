@@ -112,7 +112,6 @@ const Uploader = () => {
   const imagePosition = (url) => {
     const arr = new URL(url).href.split("/");
     const transformation = 'w_1080,h_1080,c_thumb,g_face/w_1000';
-    console.log('hey')
 
     arr.splice(6, 0, transformation)
     const joinedArr = arr.join('/')

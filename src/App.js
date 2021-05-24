@@ -49,7 +49,6 @@ function App() {
 
       make(data)
         .then((response) => {
-          console.log(response.data.resultUrl)
           setGeneratedAvatar(response.data.resultUrl);
           setIsGenerating(false);
         })
