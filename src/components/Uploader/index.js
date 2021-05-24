@@ -1,11 +1,13 @@
 import React from "react";
 import axios from "axios";
+
 import './styles.css';
+
 import { useAppState } from "../../providers/appState";
 
 import Spinner from './spinner'
 
-const Uploader = ({ label }) => {
+const Uploader = () => {
   const {
     setImageUrl,
     isUploading,
@@ -120,7 +122,7 @@ const Uploader = ({ label }) => {
 
   return (
     <>
-      <div className="Uploader" disabled={isUploading}>
+      <div className="Uploader">
         <input
           type="file"
           id="fileupload"
@@ -141,7 +143,7 @@ const Uploader = ({ label }) => {
               transform: isUploading && 'translateY(300%)'
             }}
           >
-            {label}
+            Upload your photo
           </span>
           <span
             className="uploading"

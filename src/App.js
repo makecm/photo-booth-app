@@ -31,34 +31,32 @@ function App() {
 
   useEffect(() => {
     if (imageUrl !== null) {
-      const generateAvatar = () => {
-        setIsGenerating(true);
+      setIsGenerating(true);
 
-        const data = {
-          customSize: {
-            width: previewSize.width,
-            height: previewSize.height,
-            unit: 'px',
-          },
-          format: "png",
-          fileName: "image",
-          contentDisposition: isMobile ? "inline" : "attachment",
-          data: {
-            photo: imageUrl,
-          }
-        };
-
-        make(data)
-          .then((response) => {
-            setGeneratedAvatar(response.data.resultUrl);
-            setIsGenerating(false);
-          })
-          .catch((error) => {
-            console.log(error);
-            setIsGenerating(false);
-          });
+      const data = {
+        customSize: {
+          width: previewSize.width,
+          height: previewSize.height,
+          unit: 'px',
+        },
+        format: "png",
+        fileName: "image",
+        contentDisposition: isMobile ? "inline" : "attachment",
+        data: {
+          photo: imageUrl,
+        }
       };
-      generateAvatar();
+
+      make(data)
+        .then((response) => {
+          console.log(response.data.resultUrl)
+          setGeneratedAvatar(response.data.resultUrl);
+          setIsGenerating(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsGenerating(false);
+        });
     }
   }, [imageUrl]);
 
@@ -80,7 +78,8 @@ function App() {
         )}
       </header>
       <div className="container">
-        {!imageUrl && <Uploader label="Upload your photo" />}
+
+        {!imageUrl && (<Uploader />)}
         <Preview />
 
         {imageUrl && (
