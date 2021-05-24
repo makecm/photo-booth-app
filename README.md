@@ -1,12 +1,10 @@
-# PDF Certificate Maker (App)
+# Make.cm Photo Booth (App)
 
 <img src="https://raw.githubusercontent.com/makecm/photo-booth-app/main/public/og-image.png">
 
 <br/>
 
 This repo is a simple boilerplate to allow you to create your own photo booth image generator with React, Cloudinary and [Make.cm](https://make.cm)
-
-- **App** (you're here)
 
 Check it out [here](https://photo-booth.make.cm/)
 
