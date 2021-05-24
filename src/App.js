@@ -58,7 +58,13 @@ function App() {
           setIsGenerating(false);
         });
     }
-  }, [imageUrl]);
+  }, [
+    imageUrl,
+    previewSize.height,
+    previewSize.width,
+    setIsGenerating,
+    setGeneratedAvatar
+  ]);
 
   return (
     <div className="App">
